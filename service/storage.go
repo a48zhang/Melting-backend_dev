@@ -2,7 +2,10 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
+	"log"
 	"main/model"
 	"main/model/db"
 	"mime/multipart"
@@ -17,15 +20,24 @@ var conf model.QNconfig
 
 func Init() {
 	db.OpenDB()
-	conf = model.QNconfig{
-		AccessKey: os.Getenv("access_key"),
-		SecretKey: os.Getenv("secret_key"),
-		Bucket:    os.Getenv("bucket_name"),
-		Domain:    os.Getenv("domain_name"),
+	file, err := os.Open("./conf/qn.json")
+	if err != nil {
+		conf = model.QNconfig{
+			AccessKey: os.Getenv("access_key"),
+			SecretKey: os.Getenv("secret_key"),
+			Bucket:    os.Getenv("bucket_name"),
+			Domain:    os.Getenv("domain_name"),
+		}
+	} else {
+		tmp, _ := io.ReadAll(file)
+		json.Unmarshal(tmp, &conf)
+	}
+	if conf.AccessKey == "" {
+		log.Fatal("Failed to connect to cloud storage")
 	}
 }
 
-func UploadProfilePhoto(id int, file multipart.File, size int64) (string, error) {
+func UploadProfilePhoto(id int, file *multipart.File, size int64) (string, error) {
 	keyToOverwrite := strconv.Itoa(id) + ".jpg"
 	putPolicy := storage.PutPolicy{
 		Scope: fmt.Sprintf("%s:%s", conf.Bucket, keyToOverwrite),
@@ -39,10 +51,12 @@ func UploadProfilePhoto(id int, file multipart.File, size int64) (string, error)
 		UseHTTPS:      false,
 	})
 
-	ret := storage.PutRet{}
+	putExtra := new(storage.PutExtra)
 
-	if err := formUploader.Put(context.Background(), &ret,
-		upToken, keyToOverwrite, file, size, nil); err != nil {
+	ret := new(storage.PutRet)
+
+	if err := formUploader.Put(context.Background(), ret,
+		upToken, keyToOverwrite, *file, size, putExtra); err != nil {
 		return "", err
 	}
 	return conf.Domain + "/" + ret.Key, nil

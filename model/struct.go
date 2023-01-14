@@ -3,10 +3,10 @@ package model
 import "main/model/db"
 
 type QNconfig struct {
-	AccessKey string
-	SecretKey string
-	Bucket    string
-	Domain    string
+	AccessKey string `json:"access_key"`
+	SecretKey string `json:"secret_key"`
+	Bucket    string `json:"bucket_name"`
+	Domain    string `json:"domain_name"`
 }
 
 type sth interface {

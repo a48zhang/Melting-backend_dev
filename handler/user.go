@@ -56,14 +56,17 @@ func UploadPhoto(r *gin.Context) {
 	H, err := r.FormFile("file")
 	if err != nil {
 		SendError(r, err, nil, model.ErrorSender(), http.StatusBadRequest)
+		return
 	}
 	file, err := H.Open() // Warning: file must be *.jpg
 	if err != nil {
 		SendError(r, err, nil, model.ErrorSender(), http.StatusBadRequest)
+		return
 	}
-	url, err := service.UploadProfilePhoto(id, file, H.Size)
+	url, err := service.UploadProfilePhoto(id, &file, H.Size)
 	if err != nil {
 		SendError(r, err, nil, model.ErrorSender(), http.StatusInternalServerError)
+		return
 	}
 	var data = db.User{
 		UID: int32(id),
@@ -73,6 +76,7 @@ func UploadPhoto(r *gin.Context) {
 	err = model.UpdateSth(data)
 	if err != nil {
 		SendError(r, err, nil, model.ErrorSender(), http.StatusInternalServerError)
+		return
 	}
 	SendResponse(r, data)
 }
