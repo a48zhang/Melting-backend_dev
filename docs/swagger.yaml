@@ -98,7 +98,8 @@ definitions:
       auth:
         type: string
       nick_name:
-        description: 最多七个汉字
+        type: string
+      qq:
         type: string
     type: object
   model.LoginResponse:
@@ -130,6 +131,10 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/model.LoginRequest'
+      - description: type of login(use 'qq' to login with qq)
+        in: query
+        name: loginType
+        type: string
       produces:
       - application/json
       responses:
@@ -149,7 +154,7 @@ paths:
           description: token generation failed
           schema:
             $ref: '#/definitions/Response'
-      summary: native login
+      summary: login
       tags:
       - register and login
   /project:

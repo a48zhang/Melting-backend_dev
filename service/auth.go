@@ -29,6 +29,30 @@ func LoginNative(data db.User) (string, error) {
 	}
 }
 
+func LoginWithQQ(data db.User) (string, error) {
+	// TODO Login auth should be Base64 encrypted
+	// s, err := B64Decode(data.Auth)
+	//if err != nil {
+	//	return "", err
+	//}
+	//ds := string(s)
+	ds := data.Auth
+	loginAuth := db.User{
+		Qq: data.Qq,
+	}
+	loginAuth = model.GetFromUsers(loginAuth)
+	if ds == loginAuth.Auth {
+		t, err := Newtoken(int(loginAuth.UID))
+		if err != nil {
+			return "", err
+		} else {
+			return t, nil
+		}
+	} else {
+		return "", model.ErrAuthIncorrect
+	}
+}
+
 func CreateNative(data db.User) error {
 	tmp := db.User{UID: 0, NickName: data.NickName}
 	tmp = model.GetFromUsers(tmp)
