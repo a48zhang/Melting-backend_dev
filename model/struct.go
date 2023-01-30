@@ -15,7 +15,8 @@ type sth interface {
 	GetKey() (string, int)
 }
 
-type LoginRequest struct{
-	NickName    string `json:"nick_name"`        // 最多七个汉字
-	Auth        string `json:"auth"`
+type LoginRequest struct {
+	NickName string `json:"nick_name"`
+	QQ       string `json:"qq"`
+	Auth     string `json:"auth"`
 }

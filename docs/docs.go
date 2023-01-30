@@ -31,7 +31,7 @@ const docTemplate = `{
                 "tags": [
                     "register and login"
                 ],
-                "summary": "native login",
+                "summary": "login",
                 "parameters": [
                     {
                         "description": "the User who is logging in",
@@ -41,6 +41,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/model.LoginRequest"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "type of login(use 'qq' to login with qq)",
+                        "name": "loginType",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -698,7 +704,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "nick_name": {
-                    "description": "最多七个汉字",
+                    "type": "string"
+                },
+                "qq": {
                     "type": "string"
                 }
             }
