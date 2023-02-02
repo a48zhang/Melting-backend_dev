@@ -3,3 +3,4 @@ conf/
 .vscode/
 todo
 log/*
+venv/

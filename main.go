@@ -15,13 +15,13 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @title			Melting API
-// @description	Backend system of Muxi_Melting
-// @version		1.0
-// @contact.name	@a48zhang & @Cg1028
-// @contact.email	3557695455@qq.com 2194028175@qq.com
-// @schemes		http
-// @BasePath		/api/v1
+//	@title			Melting API
+//	@description	Backend system of Muxi_Melting
+//	@version		1.0
+//	@contact.name	@a48zhang & @Cg1028
+//	@contact.email	3557695455@qq.com 2194028175@qq.com
+//	@schemes		http
+//	@BasePath		/api/v1
 func main() {
 	logger()
 	service.Init()

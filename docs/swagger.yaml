@@ -258,6 +258,36 @@ paths:
       summary: Get a game's info
       tags:
       - projects
+  /project/games/details:
+    get:
+      consumes:
+      - application/json
+      description: Get a game's detail by id
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: game_id
+        in: query
+        name: game_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response'
+        "404":
+          description: Not Found
+      summary: Get a game's detail
+      tags:
+      - projects
   /project/games/find:
     post:
       consumes:
