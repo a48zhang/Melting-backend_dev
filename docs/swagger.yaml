@@ -117,7 +117,7 @@ info:
     name: '@a48zhang & @Cg1028'
   description: Backend system of Muxi_Melting
   title: Melting API
-  version: "1.0"
+  version: "1.1"
 paths:
   /login:
     post:
@@ -274,8 +274,6 @@ paths:
         name: game_id
         required: true
         type: string
-      produces:
-      - application/json
       responses:
         "200":
           description: OK

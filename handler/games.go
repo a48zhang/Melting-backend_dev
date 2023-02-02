@@ -62,9 +62,9 @@ func FindGames(r *gin.Context) {
 //	@Accept			application/json
 //	@Param			Authorization	header	string	true	"token"
 //	@Param			game_id			query	string	true	"game_id"
-//	@Success		200	
-//	@Failure		400	{object}	handler.Response
-//	@Failure		404	
+//	@Success		200				
+//	@Failure		400				{object}	handler.Response
+//	@Failure		404				
 //	@Router			/project/games/details [get]
 func GameDetail(r *gin.Context) {
 	id := r.Query("game_id")
