@@ -3,17 +3,14 @@ package service
 import (
 	"context"
 	"encoding/json"
-	"fmt"
+	"github.com/qiniu/go-sdk/v7/auth/qbox"
+	"github.com/qiniu/go-sdk/v7/storage"
 	"io"
 	"log"
 	"main/model"
 	"main/model/db"
 	"mime/multipart"
 	"os"
-	"strconv"
-
-	"github.com/qiniu/go-sdk/v7/auth/qbox"
-	"github.com/qiniu/go-sdk/v7/storage"
 )
 
 var conf model.QNconfig
@@ -28,20 +25,26 @@ func Init() {
 			Bucket:    os.Getenv("bucket_name"),
 			Domain:    os.Getenv("domain_name"),
 		}
+		if conf.SecretKey == "" {
+			log.Fatal("Failed to connect to cloud storage. Check the env settings")
+		}
+		return
 	} else {
 		tmp, _ := io.ReadAll(file)
-		json.Unmarshal(tmp, &conf)
+		err = json.Unmarshal(tmp, &conf)
 	}
-	if conf.AccessKey == "" {
-		log.Fatal("Failed to connect to cloud storage")
+	if err != nil {
+		log.Fatal("Failed to connect to cloud storage. Error:" + err.Error())
 	}
 }
 
-func UploadProfilePhoto(id int, file *multipart.File, size int64) (string, error) {
-	keyToOverwrite := strconv.Itoa(id) + ".jpg"
+func UploadProfilePhoto(file *multipart.File, size int64) (string, error) {
 	putPolicy := storage.PutPolicy{
-		Scope: fmt.Sprintf("%s:%s", conf.Bucket, keyToOverwrite),
+		Scope:        conf.Bucket,
+		SaveKey:      "${year}_${mon}_${day}_${hour}_${min}_${sec}.jpg",
+		ForceSaveKey: true,
 	}
+
 	mac := qbox.NewMac(conf.AccessKey, conf.SecretKey)
 	upToken := putPolicy.UploadToken(mac)
 
@@ -52,12 +55,12 @@ func UploadProfilePhoto(id int, file *multipart.File, size int64) (string, error
 	})
 
 	putExtra := new(storage.PutExtra)
-
 	ret := new(storage.PutRet)
 
 	if err := formUploader.Put(context.Background(), ret,
-		upToken, keyToOverwrite, *file, size, putExtra); err != nil {
+		upToken, "", *file, size, putExtra); err != nil {
 		return "", err
 	}
+
 	return conf.Domain + "/" + ret.Key, nil
 }

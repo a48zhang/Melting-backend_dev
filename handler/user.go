@@ -63,7 +63,7 @@ func UploadPhoto(r *gin.Context) {
 		SendError(r, err, nil, model.ErrorSender(), http.StatusBadRequest)
 		return
 	}
-	url, err := service.UploadProfilePhoto(id, &file, H.Size)
+	url, err := service.UploadProfilePhoto(&file, H.Size)
 	if err != nil {
 		SendError(r, err, nil, model.ErrorSender(), http.StatusInternalServerError)
 		return
