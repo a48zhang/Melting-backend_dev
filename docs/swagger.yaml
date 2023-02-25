@@ -117,8 +117,27 @@ info:
     name: '@a48zhang & @Cg1028'
   description: Backend system of Muxi_Melting
   title: Melting API
-  version: "1.1"
+  version: "1.2"
 paths:
+  /avatar:
+    get:
+      description: Get User's avatar with its userID
+      parameters:
+      - description: uid
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.User'
+      summary: Get User's Avatar
+      tags:
+      - user
   /login:
     post:
       consumes:

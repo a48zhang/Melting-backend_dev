@@ -19,6 +19,35 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/avatar": {
+            "get": {
+                "description": "Get User's avatar with its userID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get User's Avatar",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "uid",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/db.User"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "login and return id\u0026token",
@@ -772,7 +801,7 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.1",
+	Version:          "1.2",
 	Host:             "",
 	BasePath:         "/api/v1",
 	Schemes:          []string{"http"},

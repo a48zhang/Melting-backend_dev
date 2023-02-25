@@ -10,10 +10,39 @@
             "name": "@a48zhang \u0026 @Cg1028",
             "email": "3557695455@qq.com 2194028175@qq.com"
         },
-        "version": "1.1"
+        "version": "1.2"
     },
     "basePath": "/api/v1",
     "paths": {
+        "/avatar": {
+            "get": {
+                "description": "Get User's avatar with its userID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get User's Avatar",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "uid",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/db.User"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "login and return id\u0026token",

@@ -5,6 +5,7 @@ import (
 	"main/model/db"
 	"main/service"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -97,4 +98,23 @@ func GetUserInfo(r *gin.Context) {
 	}
 	data = model.GetSth(data)
 	SendResponse(r, data)
+}
+
+// GetOnesAvatar godoc
+//
+//	@Summary		Get User's Avatar
+//	@Tags			user
+//	@Description	Get User's avatar with its userID
+//	@Param			id	query	string	true	"uid"
+//	@Produce		json
+//	@Success		200	{object}	db.User
+//	@Router			/avatar [get]
+func GetOnesAvatar(r *gin.Context) {
+	Q := r.Query("id")
+	id, _ := strconv.Atoi(Q)
+	data := db.User{
+		UID: int32(id),
+	}
+	data = model.GetSth(data)
+	SendResponse(r, data.Photo)
 }

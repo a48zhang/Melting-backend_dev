@@ -14,6 +14,7 @@ func Register(e *gin.Engine) {
 	})
 
 	e.Static("/resource/games", "./resource/games")
+	e.GET("/api/v1/avatar", handler.GetOnesAvatar)
 
 	v1 := e.Group("/api/v1")
 	{
