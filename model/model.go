@@ -18,11 +18,12 @@ func UpdateSth[T sth](value T) error {
 	return result.Error
 }
 
-func CreateSth[T sth](value T) error {
+func CreateSth[T sth](value T) (error, int) {
 	var x = new(T) // <- Used to fix nil pointer panic.
 	*x = value     //	Don't touch it.
 	result := db.DB.Table(value.TableName()).Create(x)
-	return result.Error
+	_, id := (*x).GetKey()
+	return result.Error, id
 }
 
 func DeleteSth[T sth](value T) error {

@@ -1,13 +1,12 @@
 package handler
 
 import (
+	"github.com/gin-gonic/gin"
 	"main/model"
 	"main/model/db"
 	"net/http"
 	"strconv"
 	"time"
-
-	"github.com/gin-gonic/gin"
 )
 
 // Getprojects godoc
@@ -137,17 +136,19 @@ func CreateProject(r *gin.Context) {
 	}
 	data.UID = int32(r.GetInt("userID"))
 	data.Time = time.Now()
+	//data.Time, err = time.Parse()
+	// TODO
 	if data.Budget == "" {
 		data.Budget = "{}"
 	}
 	if data.Nodes == "" {
 		data.Nodes = "{}"
 	}
-	err = model.CreateSth(*data)
+	err, id := model.CreateSth(*data)
+	data.InfoID = int32(id)
 	if err != nil {
 		SendError(r, err, data, model.ErrorSender(), http.StatusInternalServerError)
 		return
 	}
 	SendResponse(r, data)
 }
-

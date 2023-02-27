@@ -62,7 +62,9 @@ func CreateNative(data db.User) error {
 	if data.Auth == "" {
 		return model.ErrAuthInvalid
 	}
-	err := model.CreateSth(data)
+	// Encrypt Password
+	// TODO
+	err, _ := model.CreateSth(data)
 	if err != nil {
 		return err
 	}
@@ -78,7 +80,7 @@ func CreateWithQQ(data db.User) error {
 	if data.Auth == "" {
 		return model.ErrAuthInvalid
 	}
-	err := model.CreateSth(data)
+	err, _ := model.CreateSth(data)
 	if err != nil {
 		return err
 	}
