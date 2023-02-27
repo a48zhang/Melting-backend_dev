@@ -1,10 +1,13 @@
-FROM golang
+FROM golang:alpine
 ENV GOPROXY=https://goproxy.cn
-RUN mkdir melting
-ADD  . /melting
-WORKDIR /melting
 ENV GIN_MODE=release
-RUN mkdir log
+RUN mkdir build/
+ADD  . /build
+WORKDIR /build
 RUN go mod tidy
 RUN go build main
-CMD ["./main"]
+RUN cp ./main ~/main
+WORKDIR ~
+RUN rm -rf ~/build
+RUN mkdir log
+CMD ["~/main"]
