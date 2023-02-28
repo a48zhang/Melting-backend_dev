@@ -6,7 +6,6 @@ import (
 	"main/model/db"
 	"net/http"
 	"strconv"
-	"time"
 )
 
 // Getprojects godoc
@@ -135,9 +134,6 @@ func CreateProject(r *gin.Context) {
 		return
 	}
 	data.UID = int32(r.GetInt("userID"))
-	data.Time = time.Now()
-	//data.Time, err = time.Parse()
-	// TODO
 	if data.Budget == "" {
 		data.Budget = "{}"
 	}

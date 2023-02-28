@@ -51,11 +51,9 @@ func GetFromUsers(value db.User) db.User {
 
 func GetGames(value db.Game) []db.Game {
 	data := make([]db.Game, 100)
-	db.DB.Table(value.TableName()).Where(
-		"venue = ?", value.Venue,
-	).Find(&data,
-		"time LIKE ? or crowd LIKE ?",
-		value.Time, value.Crowd,
+	db.DB.Table(value.TableName()).Find(&data,
+		"venue LIKE ? or time LIKE ? or crowd LIKE ?",
+		value.Venue, value.Time, value.Crowd,
 	).Limit(99)
 	return data
 }

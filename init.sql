@@ -1,8 +1,5 @@
-## modified 1/7/2022
+## modified 2/28/2023
 ##用户信息
-##由于开发主力过于迅猛，被迫作为监工的我在此留下标记。
-## ovo
-
 CREATE TABLE if not exists`Users`(
                                      `uid` INT AUTO_INCREMENT COMMENT '序号',
                                      `photo` VARCHAR(200) COMMENT '头像',
@@ -21,7 +18,7 @@ CREATE TABLE if not exists`Users`(
 CREATE TABLE if not exists `proposal_info` (
                                                `info_id` INT AUTO_INCREMENT COMMENT '活动序号',
                                                `place` VARCHAR(60) DEFAULT '活动位置' COMMENT '活动位置',
-                                               `time` DATETIME DEFAULT NULL COMMENT '活动时间',
+                                               `time` VARCHAR(100) DEFAULT NULL COMMENT '活动时间',
                                                `department` VARCHAR(30) DEFAULT '部门名称' COMMENT '部门',
                                                `name` VARCHAR(40) DEFAULT '活动名称' COMMENT '活动',
                                                `aim` VARCHAR(300) DEFAULT '活动目的' COMMENT '活动目的',
