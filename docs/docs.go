@@ -19,22 +19,29 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/avatar": {
+        "/join": {
             "get": {
-                "description": "Get User's avatar with its userID",
+                "description": "Join a proposal with infoId",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "user"
                 ],
-                "summary": "Get User's Avatar",
+                "summary": "Join certain proposal (login required)",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "uid",
+                        "description": "infoId",
                         "name": "id",
                         "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     }
                 ],
@@ -478,9 +485,38 @@ const docTemplate = `{
                 }
             }
         },
-        "/users": {
+        "/user": {
             "get": {
                 "description": "Get User's info with its userID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get User's info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "uid",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/db.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "description": "Get User's info",
                 "produces": [
                     "application/json"
                 ],
@@ -507,7 +543,7 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "upload sth with its UserID",
+                "description": "upload user's profile",
                 "consumes": [
                     "application/json"
                 ],
@@ -583,7 +619,7 @@ const docTemplate = `{
         },
         "/users/photo": {
             "put": {
-                "description": "upload photo with its UserID",
+                "description": "upload user's avatar",
                 "consumes": [
                     "image/jpeg"
                 ],
@@ -675,6 +711,9 @@ const docTemplate = `{
                 },
                 "budget": {
                     "description": "活动预算",
+                    "type": "string"
+                },
+                "corporates": {
                     "type": "string"
                 },
                 "department": {

@@ -29,6 +29,8 @@ definitions:
       budget:
         description: 活动预算
         type: string
+      corporates:
+        type: string
       department:
         description: 部门
         type: string
@@ -119,13 +121,18 @@ info:
   title: Melting API
   version: "1.2"
 paths:
-  /avatar:
+  /join:
     get:
-      description: Get User's avatar with its userID
+      description: Join a proposal with infoId
       parameters:
-      - description: uid
+      - description: infoId
         in: query
         name: id
+        required: true
+        type: string
+      - description: token
+        in: header
+        name: Authorization
         required: true
         type: string
       produces:
@@ -135,7 +142,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/db.User'
-      summary: Get User's Avatar
+      summary: Join certain proposal (login required)
       tags:
       - user
   /login:
@@ -423,9 +430,28 @@ paths:
       summary: register account
       tags:
       - register and login
-  /users:
+  /user:
     get:
       description: Get User's info with its userID
+      parameters:
+      - description: uid
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.User'
+      summary: Get User's info
+      tags:
+      - user
+  /users:
+    get:
+      description: Get User's info
       parameters:
       - description: token
         in: header
@@ -445,7 +471,7 @@ paths:
     put:
       consumes:
       - application/json
-      description: upload sth with its UserID
+      description: upload user's profile
       parameters:
       - description: token
         in: header
@@ -495,7 +521,7 @@ paths:
     put:
       consumes:
       - image/jpeg
-      description: upload photo with its UserID
+      description: upload user's avatar
       parameters:
       - description: the photo of the user
         in: formData

@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"encoding/json"
+	"fmt"
 	"main/model"
 	"main/model/db"
 	"main/service"
@@ -14,7 +16,7 @@ import (
 //
 //	@Summary		upload profile
 //	@Tags			user
-//	@Description	upload sth with its UserID
+//	@Description	upload user's profile
 //	@Accept			application/json
 //	@Produce		json
 //	@Param			Authorization	header		string	true	"token"
@@ -43,7 +45,7 @@ func UploadProfile(r *gin.Context) {
 //
 //	@Summary		upload photo
 //	@Tags			user
-//	@Description	upload photo with its UserID
+//	@Description	upload user's avatar
 //	@Accept			image/jpeg
 //	@Produce		json
 //	@Param			file			formData	object	true	"the photo of the user"
@@ -86,7 +88,7 @@ func UploadPhoto(r *gin.Context) {
 //
 //	@Summary		Get User's info
 //	@Tags			user
-//	@Description	Get User's info with its userID
+//	@Description	Get User's info
 //	@Param			Authorization	header	string	true	"token"
 //	@Produce		json
 //	@Success		200	{object}	db.User
@@ -100,21 +102,59 @@ func GetUserInfo(r *gin.Context) {
 	SendResponse(r, data)
 }
 
-// GetOnesAvatar godoc
+// GetOnesInfo godoc
 //
-//	@Summary		Get User's Avatar
+//	@Summary		Get User's info
 //	@Tags			user
-//	@Description	Get User's avatar with its userID
+//	@Description	Get User's info with its userID
 //	@Param			id	query	string	true	"uid"
 //	@Produce		json
 //	@Success		200	{object}	db.User
-//	@Router			/avatar [get]
-func GetOnesAvatar(r *gin.Context) {
+//	@Router			/user [get]
+func GetOnesInfo(r *gin.Context) {
 	Q := r.Query("id")
 	id, _ := strconv.Atoi(Q)
 	data := db.User{
 		UID: int32(id),
 	}
 	data = model.GetSth(data)
-	SendResponse(r, data.Photo)
+	SendResponse(r, data)
+}
+
+// JoinProposal godoc
+//
+//	@Summary		Join certain proposal (login required)
+//	@Tags			user
+//	@Description	Join a proposal with infoId
+//	@Param			id				query	string	true	"infoId"
+//	@Param			Authorization	header	string	true	"token"
+//	@Produce		json
+//	@Success		200	{object}	db.User
+//	@Router			/join [get]
+func JoinProposal(r *gin.Context) {
+	uid := r.GetInt("userID")
+	infoID, _ := strconv.Atoi(r.Query("id"))
+
+	data := db.ProposalInfo{
+		InfoID: int32(infoID),
+	}
+	data = model.GetSth(data)
+	corplist := make([]interface{}, 100)
+	err := json.Unmarshal([]byte(data.Corporates), &corplist)
+	if err != nil {
+		SendError(r, err, data, model.ErrorSender(), 500)
+		return
+	}
+	corplist = append(corplist, uid)
+	fmt.Println("debug: uid:", uid)
+	tmp, _ := json.Marshal(corplist)
+	fmt.Println("debug:", corplist, " ", tmp)
+	data.Corporates = string(tmp)
+	fmt.Println("debug:", data.Corporates)
+	err = model.UpdateSth(data)
+	if err != nil {
+		SendError(r, err, data, model.ErrorSender(), 500)
+		return
+	}
+	SendResponse(r, data)
 }

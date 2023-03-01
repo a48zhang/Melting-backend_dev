@@ -27,6 +27,7 @@ CREATE TABLE if not exists `proposal_info` (
                                                 `uid` int,
                                                 `game` VARCHAR(400) DEFAULT '游戏项目' COMMENT '游戏项目',
                                                 `nodes` json COMMENT '项目环节',
+                                                `corporates` json,
                                                 PRIMARY KEY (`info_id`)
 
 );

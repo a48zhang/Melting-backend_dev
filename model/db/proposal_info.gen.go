@@ -19,6 +19,7 @@ type ProposalInfo struct {
 	UID            int32  `gorm:"column:uid" json:"uid"`
 	Game           string `gorm:"column:game;default:游戏项目" json:"game"` // 游戏项目
 	Nodes          string `gorm:"column:nodes" json:"nodes"`            // 项目环节
+	Corporates     string `gorm:"column:corporates" json:"corporates"`
 }
 
 // TableName ProposalInfo's table name
