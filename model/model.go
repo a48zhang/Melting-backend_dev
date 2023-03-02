@@ -38,6 +38,12 @@ func GetManySth[T sth](value T) ([]T, int) {
 	return data, int(result.RowsAffected)
 }
 
+func DeleteProposal(value db.ProposalInfo) error {
+	pk, id := value.GetKey()
+	result := db.DB.Table(value.TableName()).Where(pk+" = ?", id).Update("uid", 0)
+	return result.Error
+}
+
 func GetProposals(uid int) ([]db.ProposalInfo, int) {
 	data := make([]db.ProposalInfo, 100)
 	result := db.DB.Table(db.TableNameProposalInfo).Where("uid = ?", uid).Scan(&data)

@@ -38,7 +38,7 @@ func Register(e *gin.Engine) {
 			project.PUT("", handler.UpdateProject)
 			project.GET("/template", handler.GetTemplate)
 			project.POST("/newproject", handler.CreateProject)
-			project.Delete("",handler.DeleteProject)		   //删除项目
+			project.DELETE("", handler.DeleteProject)
 
 			games := project.Group("/games")
 			{
