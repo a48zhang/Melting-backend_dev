@@ -163,7 +163,7 @@ func CreateProject(r *gin.Context) {
 //	@Failure		500	{object}	handler.Response
 //	@Failure		403	{object}	handler.Response
 //	@Failure		401	{object}	handler.Response
-//	@Router			/project [put]
+//	@Router			/project [delete]
 func DeleteProject(r *gin.Context) {
 	sid := r.Query("id")
 	if sid == "" {
