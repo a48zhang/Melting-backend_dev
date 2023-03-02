@@ -62,9 +62,9 @@ func FindGames(r *gin.Context) {
 //	@Accept			application/json
 //	@Param			Authorization	header	string	true	"token"
 //	@Param			game_id			query	string	true	"game_id"
-//	@Success		200				
+//	@Success		200
 //	@Failure		400				{object}	handler.Response
-//	@Failure		404				
+//	@Failure		404
 //	@Router			/project/games/details [get]
 func GameDetail(r *gin.Context) {
 	id := r.Query("game_id")
@@ -72,5 +72,5 @@ func GameDetail(r *gin.Context) {
 		SendError(r, nil, nil, model.ErrorSender(), http.StatusBadRequest)
 		return
 	}
-	r.Redirect(http.StatusMovedPermanently, "/resource/games/"+id+".html")
+	r.Redirect(http.StatusMovedPermanently, "/resource/games/"+id+".json")
 }
