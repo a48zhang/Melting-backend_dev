@@ -148,3 +148,39 @@ func CreateProject(r *gin.Context) {
 	}
 	SendResponse(r, data)
 }
+
+
+// DeleteProject godoc
+//
+//	@Summary		Delete one's project
+//	@Tags			projects
+//	@Description	Delete user's project(login required)
+//	@Accept			application/json
+//	@Param			id				query	string			true	"the id of the project"
+//	@Param			Authorization	header	string			true	"token"
+//	@Produce		json
+//	@Success		200	{object}	handler.Response
+//	@Failure		500	{object}	handler.Response
+//	@Failure		403	{object}	handler.Response
+//	@Failure		401	{object}	handler.Response
+//	@Router			/project [put]
+func DeleteProject(r *gin.Context) {
+	sid := r.Query("id")
+	if sid == "" {
+		SendBadRequest(r, model.ErrBadRequest, nil, model.ErrorSender())
+		return
+	}
+	id, _ := strconv.Atoi(sid)
+	data := db.ProposalInfo{
+		InfoID: int32(id),
+	}
+	data.UID = 0
+
+	err := model.UpdateSth(data)
+	if err != nil {
+		SendError(r, err, data, model.ErrorSender(), http.StatusInternalServerError)
+		return
+	}
+	SendResponse(r, model.NoResponse)
+}
+
