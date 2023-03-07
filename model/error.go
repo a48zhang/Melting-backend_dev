@@ -48,3 +48,7 @@ var ErrNotAuthorized = err{
 	Code: 403,
 	Typ:  "Operation requires authentication",
 }
+var ErrUserExist = err{
+	Code: 400,
+	Typ:  "The user already exists",
+}

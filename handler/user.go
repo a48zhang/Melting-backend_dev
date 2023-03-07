@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"main/model"
 	"main/model/db"
 	"main/service"
@@ -130,6 +129,7 @@ func GetOnesInfo(r *gin.Context) {
 //	@Param			Authorization	header	string	true	"token"
 //	@Produce		json
 //	@Success		200	{object}	db.User
+//	@Failure		400				{object}	handler.Response	"user exists"
 //	@Router			/join [get]
 func JoinProposal(r *gin.Context) {
 	uid := r.GetInt("userID")
@@ -145,12 +145,15 @@ func JoinProposal(r *gin.Context) {
 		SendError(r, err, data, model.ErrorSender(), 500)
 		return
 	}
+	for i := range corplist {
+		if i == uid {
+			SendError(r, model.ErrUserExist, data, model.ErrorSender(), 400)
+			return
+		}
+	}
 	corplist = append(corplist, uid)
-	fmt.Println("debug: uid:", uid)
 	tmp, _ := json.Marshal(corplist)
-	fmt.Println("debug:", corplist, " ", tmp)
 	data.Corporates = string(tmp)
-	fmt.Println("debug:", data.Corporates)
 	err = model.UpdateSth(data)
 	if err != nil {
 		SendError(r, err, data, model.ErrorSender(), 500)
