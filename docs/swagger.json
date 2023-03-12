@@ -10,7 +10,7 @@
             "name": "@a48zhang \u0026 @Cg1028",
             "email": "3557695455@qq.com 2194028175@qq.com"
         },
-        "version": "1.3"
+        "version": "1.4"
     },
     "basePath": "/api/v1",
     "paths": {
@@ -45,6 +45,12 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/db.User"
+                        }
+                    },
+                    "400": {
+                        "description": "user exists",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
                         }
                     }
                 }

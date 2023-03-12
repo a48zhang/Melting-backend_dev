@@ -119,7 +119,7 @@ info:
     name: '@a48zhang & @Cg1028'
   description: Backend system of Muxi_Melting
   title: Melting API
-  version: "1.3"
+  version: "1.4"
 paths:
   /join:
     get:
@@ -142,6 +142,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/db.User'
+        "400":
+          description: user exists
+          schema:
+            $ref: '#/definitions/Response'
       summary: Join certain proposal (login required)
       tags:
       - user

@@ -129,7 +129,7 @@ func GetOnesInfo(r *gin.Context) {
 //	@Param			Authorization	header	string	true	"token"
 //	@Produce		json
 //	@Success		200	{object}	db.User
-//	@Failure		400				{object}	handler.Response	"user exists"
+//	@Failure		400	{object}	handler.Response	"user exists"
 //	@Router			/join [get]
 func JoinProposal(r *gin.Context) {
 	uid := r.GetInt("userID")
@@ -139,20 +139,20 @@ func JoinProposal(r *gin.Context) {
 		InfoID: int32(infoID),
 	}
 	data = model.GetSth(data)
-	corplist := make([]interface{}, 100)
-	err := json.Unmarshal([]byte(data.Corporates), &corplist)
+	list := make([]interface{}, 100)
+	err := json.Unmarshal([]byte(data.Corporates), &list)
 	if err != nil {
 		SendError(r, err, data, model.ErrorSender(), 500)
 		return
 	}
-	for i := range corplist {
-		if i == uid {
+	for _, i := range list {
+		if int(i.(float64)) == uid { // <-  Don't touch my code if you don't know why.
 			SendError(r, model.ErrUserExist, data, model.ErrorSender(), 400)
 			return
 		}
 	}
-	corplist = append(corplist, uid)
-	tmp, _ := json.Marshal(corplist)
+	list = append(list, uid)
+	tmp, _ := json.Marshal(list)
 	data.Corporates = string(tmp)
 	err = model.UpdateSth(data)
 	if err != nil {
