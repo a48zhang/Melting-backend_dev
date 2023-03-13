@@ -16,10 +16,15 @@ import (
 //	@Produce		json
 //	@Param			Authorization	header		string	true	"token"
 //	@Success		200				{object}	db.ProposalInfo
+//	@Failure		404				{object}	handler.Response	"Resource requested not found"
 //	@Router			/users/myproject [get]
 func Getprojects(r *gin.Context) {
 	id := r.GetInt("userID")
-	data, _ := model.GetProposals(id)
+	data, n := model.GetProposals(id)
+	if n == 0 {
+		SendError(r, model.ErrNotFound, nil, model.ErrorSender(), http.StatusNotFound)
+		return
+	}
 	SendResponse(r, data)
 }
 

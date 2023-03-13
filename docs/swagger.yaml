@@ -551,6 +551,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/db.ProposalInfo'
+        "404":
+          description: Resource requested not found
+          schema:
+            $ref: '#/definitions/Response'
       summary: Get one's projects
       tags:
       - projects

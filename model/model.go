@@ -47,7 +47,7 @@ func DeleteProposal(value db.ProposalInfo) error {
 func GetProposals(uid int) ([]db.ProposalInfo, int) {
 	data := make([]db.ProposalInfo, 100)
 	result := db.DB.Table(db.TableNameProposalInfo).Where("uid = ?", uid).Scan(&data)
-	return data, int(result.RowsAffected)
+	return data[0:int(result.RowsAffected)], int(result.RowsAffected)
 }
 
 func GetFromUsers(value db.User) db.User {

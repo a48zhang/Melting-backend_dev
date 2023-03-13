@@ -52,3 +52,7 @@ var ErrUserExist = err{
 	Code: 400,
 	Typ:  "The user already exists",
 }
+var ErrNotFound = err{
+	Code: 404,
+	Typ:  "Resource requested not found",
+}

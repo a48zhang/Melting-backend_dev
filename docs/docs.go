@@ -668,6 +668,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/db.ProposalInfo"
                         }
+                    },
+                    "404": {
+                        "description": "Resource requested not found",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
                     }
                 }
             }
