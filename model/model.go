@@ -6,40 +6,40 @@ import (
 
 // GetSth is used to get something from database.
 // The "something" must fulfil interface "sth", which has method "TableName" and "GetKey".
-func GetSth[T sth](value T) T {
-	pk, id := value.GetKey()
+func GetSth[T db.Sth](value T) T {
+	pk, id := db.GetKey(value)
 	db.DB.Find(&value, pk+" = ?", id)
 	return value
 }
 
-func UpdateSth[T sth](value T) error {
-	pk, id := value.GetKey()
+func UpdateSth[T db.Sth](value T) error {
+	pk, id := db.GetKey(value)
 	result := db.DB.Table(value.TableName()).Updates(value).Where(pk+" = ?", id)
 	return result.Error
 }
 
-func CreateSth[T sth](value T) (error, int) {
+func CreateSth[T db.Sth](value T) (error, int) {
 	var x = new(T) // <- Used to fix nil pointer panic.
 	*x = value     //	Don't touch it.
 	result := db.DB.Table(value.TableName()).Create(x)
-	_, id := (*x).GetKey()
+	_, id := db.GetKey(*x)
 	return result.Error, id
 }
 
-func DeleteSth[T sth](value T) error {
+func DeleteSth[T db.Sth](value T) error {
 	result := db.DB.Table(value.TableName()).Delete(&value)
 	return result.Error
 }
 
-func GetManySth[T sth](value T) ([]T, int) {
-	pk, id := value.GetKey()
+func GetManySth[T db.Sth](value T) ([]T, int) {
+	pk, id := db.GetKey(value)
 	data := make([]T, 100)
 	result := db.DB.Table(value.TableName()).Where(pk+" = ?", id).Scan(&data)
 	return data, int(result.RowsAffected)
 }
 
 func DeleteProposal(value db.ProposalInfo) error {
-	pk, id := value.GetKey()
+	pk, id := db.GetKey(value)
 	result := db.DB.Table(value.TableName()).Where(pk+" = ?", id).Update("uid", 0)
 	return result.Error
 }
