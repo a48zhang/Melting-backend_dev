@@ -119,7 +119,7 @@ info:
     name: '@a48zhang & @Cg1028'
   description: Backend system of Muxi_Melting
   title: Melting API
-  version: "1.4"
+  version: "1.5"
 paths:
   /join:
     get:
