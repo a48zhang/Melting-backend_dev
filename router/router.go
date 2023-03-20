@@ -37,6 +37,9 @@ func Register(e *gin.Engine) {
 			project.GET("", handler.GetProject)
 			project.PUT("", handler.UpdateProject)
 			project.GET("/template", handler.GetTemplate)
+			project.POST("/template", handler.CreateTemplate)
+			project.PUT("/template", handler.UpdateTemplate)
+			project.DELETE("/template", handler.DeleteTemplate)
 			project.POST("/newproject", handler.CreateProject)
 			project.DELETE("", handler.DeleteProject)
 

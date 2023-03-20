@@ -412,13 +412,49 @@ paths:
       tags:
       - projects
   /project/template:
+    delete:
+      consumes:
+      - application/json
+      description: Create user's project(login required)
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: operating project
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Response'
+      summary: Delete certain template
+      tags:
+      - template
     get:
-      description: Get a template with its id
+      description: Get a template with its id or name
       parameters:
       - description: the id of the template
         in: query
         name: id
-        required: true
+        type: string
+      - description: the name of the template
+        in: query
+        name: name
         type: string
       - description: token
         in: header
@@ -436,9 +472,81 @@ paths:
           description: Forbidden
           schema:
             $ref: '#/definitions/Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Response'
       summary: Get a template
       tags:
-      - deprecated
+      - template
+    post:
+      consumes:
+      - application/json
+      description: Create a new template(login required)
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: operating project
+        in: body
+        name: newproject
+        required: true
+        schema:
+          $ref: '#/definitions/db.Template'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Response'
+      summary: Create a new template
+      tags:
+      - template
+    put:
+      consumes:
+      - application/json
+      description: Create user's project(login required)
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: operating project
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/db.Template'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Response'
+      summary: Update certain template
+      tags:
+      - template
   /register:
     post:
       description: create a new account in certain way

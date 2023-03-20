@@ -63,3 +63,9 @@ func GetGames(value db.Game) []db.Game {
 	).Limit(99)
 	return data
 }
+
+func GetTemplate(name string) db.Template {
+	data := db.Template{}
+	db.DB.Table(db.TableNameTemplate).Find(&data, "name = ?", name)
+	return data
+}

@@ -97,28 +97,6 @@ func UpdateProject(r *gin.Context) {
 	SendResponse(r, model.NoResponse)
 }
 
-// GetTemplate godoc
-//
-//	@Summary		Get a template
-//	@Tags			deprecated
-//	@Description	Get a template with its id
-//	@Param			id				query	string	true	"the id of the template"
-//	@Param			Authorization	header	string	true	"token"
-//	@Produce		json
-//	@Success		200	{object}	db.Template
-//	@Failure		403	{object}	handler.Response
-//	@Router			/project/template [get]
-func GetTemplate(r *gin.Context) {
-	id, err := strconv.Atoi(r.Query("id"))
-	if err != nil || id == 0 {
-		SendError(r, err, nil, model.ErrorSender(), http.StatusBadRequest)
-		return
-	}
-	data := db.Template{Temid: int32(id)}
-	data = model.GetSth(data)
-	SendResponse(r, data)
-}
-
 // CreateProject godoc
 //
 //	@Summary		Create a new project
