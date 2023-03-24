@@ -37,7 +37,7 @@ func UploadProfile(r *gin.Context) {
 		SendError(r, err, data, model.ErrorSender(), http.StatusInternalServerError)
 		return
 	}
-	SendResponse(r, model.NoResponse)
+	SendResponse(r, NoResponse)
 }
 
 // UploadPhoto godoc

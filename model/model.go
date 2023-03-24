@@ -4,68 +4,44 @@ import (
 	"main/model/db"
 )
 
+const MaxSliceCapacity = 100
+
+type Sth interface {
+	db.User | db.Template | db.ProposalInfo | db.Tag | db.Question | db.Game
+	TableName() string
+}
+
 // GetSth is used to get something from database.
 // The "something" must fulfil interface "sth", which has method "TableName" and "GetKey".
-func GetSth[T db.Sth](value T) T {
-	pk, id := db.GetKey(value)
-	db.DB.Find(&value, pk+" = ?", id)
+func GetSth[T Sth](value T) T {
+	db.DB.Find(&value)
 	return value
 }
 
-func UpdateSth[T db.Sth](value T) error {
-	pk, id := db.GetKey(value)
-	result := db.DB.Table(value.TableName()).Updates(value).Where(pk+" = ?", id)
+// UpdateSth The primary key must not be empty
+func UpdateSth[T Sth](value T) error {
+	result := db.DB.Table(value.TableName()).Updates(value)
 	return result.Error
 }
 
-func CreateSth[T db.Sth](value T) (error, int) {
+// CreateSth The primary key must be 0.
+func CreateSth[T Sth](value T) (error, T) {
 	var x = new(T) // <- Used to fix nil pointer panic.
 	*x = value     //	Don't touch it.
 	result := db.DB.Table(value.TableName()).Create(x)
-	_, id := db.GetKey(*x)
-	return result.Error, id
+	return result.Error, *x
 }
 
-func DeleteSth[T db.Sth](value T) error {
+// DeleteSth The primary key must not be empty
+func DeleteSth[T Sth](value T) error {
 	result := db.DB.Table(value.TableName()).Delete(&value)
 	return result.Error
 }
 
-func GetManySth[T db.Sth](value T) ([]T, int) {
-	pk, id := db.GetKey(value)
-	data := make([]T, 100)
-	result := db.DB.Table(value.TableName()).Where(pk+" = ?", id).Scan(&data)
-	return data, int(result.RowsAffected)
-}
-
-func DeleteProposal(value db.ProposalInfo) error {
-	pk, id := db.GetKey(value)
-	result := db.DB.Table(value.TableName()).Where(pk+" = ?", id).Update("uid", 0)
-	return result.Error
-}
-
-func GetProposals(uid int) ([]db.ProposalInfo, int) {
-	data := make([]db.ProposalInfo, 100)
-	result := db.DB.Table(db.TableNameProposalInfo).Where("uid = ?", uid).Scan(&data)
+// GetManySth Set all the conditions you need to value
+// return data slice, number
+func GetManySth[T Sth](value T) ([]T, int) {
+	data := make([]T, MaxSliceCapacity)
+	result := db.DB.Table(value.TableName()).Find(&data, value)
 	return data[0:int(result.RowsAffected)], int(result.RowsAffected)
-}
-
-func GetFromUsers(value db.User) db.User {
-	db.DB.Table(db.TableNameUser).Find(&value, "nick_name = ?", value.NickName)
-	return value
-}
-
-func GetGames(value db.Game) []db.Game {
-	data := make([]db.Game, 100)
-	db.DB.Table(value.TableName()).Find(&data,
-		"venue LIKE ? or time LIKE ? or crowd LIKE ?",
-		value.Venue, value.Time, value.Crowd,
-	).Limit(99)
-	return data
-}
-
-func GetTemplate(name string) db.Template {
-	data := db.Template{}
-	db.DB.Table(db.TableNameTemplate).Find(&data, "name = ?", name)
-	return data
 }

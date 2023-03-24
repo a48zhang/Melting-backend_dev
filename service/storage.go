@@ -7,19 +7,18 @@ import (
 	"github.com/qiniu/go-sdk/v7/storage"
 	"io"
 	"log"
-	"main/model"
 	"main/model/db"
 	"mime/multipart"
 	"os"
 )
 
-var conf model.QNconfig
+var conf storageConfig
 
 func Init() {
 	db.OpenDB()
 	file, err := os.Open("./conf/qn.json")
 	if err != nil {
-		conf = model.QNconfig{
+		conf = storageConfig{
 			AccessKey: os.Getenv("access_key"),
 			SecretKey: os.Getenv("secret_key"),
 			Bucket:    os.Getenv("bucket_name"),
@@ -63,4 +62,11 @@ func UploadProfilePhoto(file *multipart.File, size int64) (string, error) {
 	}
 
 	return conf.Domain + "/" + ret.Key, nil
+}
+
+type storageConfig struct {
+	AccessKey string `json:"access_key"`
+	SecretKey string `json:"secret_key"`
+	Bucket    string `json:"bucket_name"`
+	Domain    string `json:"domain_name"`
 }

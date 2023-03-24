@@ -73,13 +73,12 @@ func CreateTemplate(r *gin.Context) {
 	if data.Context == "" {
 		(*data).Context = "{}"
 	}
-	err, id := model.CreateSth(*data)
+	err, ret := model.CreateSth(*data)
 	if err != nil {
-		SendError(r, err, data, model.ErrorSender(), http.StatusInternalServerError)
+		SendError(r, err, ret, model.ErrorSender(), http.StatusInternalServerError)
 		return
 	}
-	(*data).Temid = int32(id)
-	SendResponse(r, data)
+	SendResponse(r, ret)
 }
 
 // UpdateTemplate godoc

@@ -34,3 +34,8 @@ func SendError(c *gin.Context, err error, data interface{}, cause string, code i
 		Data:    data,
 	})
 }
+
+var NoResponse = gin.H{
+	"code":    200,
+	"message": "null",
+}

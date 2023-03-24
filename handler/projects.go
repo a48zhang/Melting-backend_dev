@@ -20,7 +20,7 @@ import (
 //	@Router			/users/myproject [get]
 func Getprojects(r *gin.Context) {
 	id := r.GetInt("userID")
-	data, n := model.GetProposals(id)
+	data, n := model.GetManySth(db.ProposalInfo{UID: int32(id)})
 	if n == 0 {
 		SendError(r, model.ErrNotFound, nil, model.ErrorSender(), http.StatusNotFound)
 		return
@@ -94,7 +94,7 @@ func UpdateProject(r *gin.Context) {
 		SendError(r, err, data, model.ErrorSender(), http.StatusInternalServerError)
 		return
 	}
-	SendResponse(r, model.NoResponse)
+	SendResponse(r, NoResponse)
 }
 
 // CreateProject godoc
@@ -123,13 +123,12 @@ func CreateProject(r *gin.Context) {
 	if data.Nodes == "" {
 		data.Nodes = "{}"
 	}
-	err, id := model.CreateSth(*data)
-	data.InfoID = int32(id)
+	err, ret := model.CreateSth(*data)
 	if err != nil {
-		SendError(r, err, data, model.ErrorSender(), http.StatusInternalServerError)
+		SendError(r, err, ret, model.ErrorSender(), http.StatusInternalServerError)
 		return
 	}
-	SendResponse(r, data)
+	SendResponse(r, ret)
 }
 
 // DeleteProject godoc
@@ -159,5 +158,5 @@ func DeleteProject(r *gin.Context) {
 		SendError(r, err, nil, model.ErrorSender(), http.StatusInternalServerError)
 		return
 	}
-	SendResponse(r, model.NoResponse)
+	SendResponse(r, NoResponse)
 }
