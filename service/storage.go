@@ -2,45 +2,17 @@ package service
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/qiniu/go-sdk/v7/auth/qbox"
 	"github.com/qiniu/go-sdk/v7/storage"
-	"io"
-	"log"
-	"main/model/db"
 	"mime/multipart"
-	"os"
 )
 
 var conf storageConfig
 
-func Init() {
-	db.OpenDB()
-	file, err := os.Open("./conf/qn.json")
-	if err != nil {
-		conf = storageConfig{
-			AccessKey: os.Getenv("access_key"),
-			SecretKey: os.Getenv("secret_key"),
-			Bucket:    os.Getenv("bucket_name"),
-			Domain:    os.Getenv("domain_name"),
-		}
-		if conf.SecretKey == "" {
-			log.Fatal("Failed to connect to cloud storage. Check the env settings")
-		}
-		return
-	} else {
-		tmp, _ := io.ReadAll(file)
-		err = json.Unmarshal(tmp, &conf)
-	}
-	if err != nil {
-		log.Fatal("Failed to connect to cloud storage. Error:" + err.Error())
-	}
-}
-
 func UploadProfilePhoto(file *multipart.File, size int64) (string, error) {
 	putPolicy := storage.PutPolicy{
 		Scope:        conf.Bucket,
-		SaveKey:      "${year}_${mon}_${day}_${hour}_${min}_${sec}.jpg",
+		SaveKey:      "melting/${year}_${mon}_${day}_${hour}_${min}_${sec}.jpg",
 		ForceSaveKey: true,
 	}
 
