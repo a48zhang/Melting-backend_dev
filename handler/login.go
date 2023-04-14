@@ -27,10 +27,10 @@ type loginRequest struct {
 //	@Tags			register and login
 //	@Description	login and return id&token
 //	@Accept			application/json
-//	@Param			loginAuth	body	model.loginRequest	true	"the User who is logging in"
-//	@Param			loginType	query	string				false	"type of login(use 'qq' to login with qq)"
+//	@Param			loginAuth	body	db.User	true	"the User who is logging in"
+//	@Param			loginType	query	string	false	"type of login(use 'qq' to login with qq)"
 //	@Produce		json
-//	@Success		200	{object}	model.loginResponse
+//	@Success		200	{object}	handler.loginResponse
 //	@Failure		401	{object}	handler.Response	"username or password incorrect"
 //	@Failure		403	{object}	handler.Response	"param not satisfied"
 //	@Failure		500	{object}	handler.Response	"token generation failed"

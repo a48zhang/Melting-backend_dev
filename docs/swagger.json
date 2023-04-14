@@ -1,6 +1,6 @@
 {
     "schemes": [
-        "http"
+        "https"
     ],
     "swagger": "2.0",
     "info": {
@@ -10,7 +10,7 @@
             "name": "@a48zhang \u0026 @Cg1028",
             "email": "3557695455@qq.com 2194028175@qq.com"
         },
-        "version": "1.5"
+        "version": "1.6"
     },
     "basePath": "/api/v1",
     "paths": {
@@ -76,7 +76,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.LoginRequest"
+                            "$ref": "#/definitions/db.User"
                         }
                     },
                     {
@@ -90,7 +90,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.LoginResponse"
+                            "$ref": "#/definitions/handler.loginResponse"
                         }
                     },
                     "401": {
@@ -1025,21 +1025,7 @@
                 }
             }
         },
-        "model.LoginRequest": {
-            "type": "object",
-            "properties": {
-                "auth": {
-                    "type": "string"
-                },
-                "nick_name": {
-                    "type": "string"
-                },
-                "qq": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.LoginResponse": {
+        "handler.loginResponse": {
             "type": "object",
             "properties": {
                 "code": {

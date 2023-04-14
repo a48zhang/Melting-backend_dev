@@ -81,7 +81,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.LoginRequest"
+                            "$ref": "#/definitions/db.User"
                         }
                     },
                     {
@@ -95,7 +95,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.LoginResponse"
+                            "$ref": "#/definitions/handler.loginResponse"
                         }
                     },
                     "401": {
@@ -1030,21 +1030,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.LoginRequest": {
-            "type": "object",
-            "properties": {
-                "auth": {
-                    "type": "string"
-                },
-                "nick_name": {
-                    "type": "string"
-                },
-                "qq": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.LoginResponse": {
+        "handler.loginResponse": {
             "type": "object",
             "properties": {
                 "code": {
@@ -1063,10 +1049,10 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.5",
+	Version:          "1.6",
 	Host:             "",
 	BasePath:         "/api/v1",
-	Schemes:          []string{"http"},
+	Schemes:          []string{"https"},
 	Title:            "Melting API",
 	Description:      "Backend system of Muxi_Melting",
 	InfoInstanceName: "swagger",

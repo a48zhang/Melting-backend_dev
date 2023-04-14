@@ -95,16 +95,7 @@ definitions:
         description: 序号
         type: integer
     type: object
-  model.LoginRequest:
-    properties:
-      auth:
-        type: string
-      nick_name:
-        type: string
-      qq:
-        type: string
-    type: object
-  model.LoginResponse:
+  handler.loginResponse:
     properties:
       code:
         type: integer
@@ -119,7 +110,7 @@ info:
     name: '@a48zhang & @Cg1028'
   description: Backend system of Muxi_Melting
   title: Melting API
-  version: "1.5"
+  version: "1.6"
 paths:
   /join:
     get:
@@ -160,7 +151,7 @@ paths:
         name: loginAuth
         required: true
         schema:
-          $ref: '#/definitions/model.LoginRequest'
+          $ref: '#/definitions/db.User'
       - description: type of login(use 'qq' to login with qq)
         in: query
         name: loginType
@@ -171,7 +162,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.LoginResponse'
+            $ref: '#/definitions/handler.loginResponse'
         "401":
           description: username or password incorrect
           schema:
@@ -701,5 +692,5 @@ paths:
       tags:
       - user
 schemes:
-- http
+- https
 swagger: "2.0"
