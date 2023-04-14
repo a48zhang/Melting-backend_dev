@@ -10,10 +10,10 @@ import (
 
 // @title			Melting API
 // @description	Backend system of Muxi_Melting
-// @version		1.5
+// @version		1.6
 // @contact.name	@a48zhang & @Cg1028
 // @contact.email	3557695455@qq.com 2194028175@qq.com
-// @schemes		http
+// @schemes		https
 // @BasePath		/api/v1
 func main() {
 	service.Logger()
