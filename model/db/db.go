@@ -3,7 +3,6 @@ package db
 import (
 	"encoding/json"
 	"io"
-	"log"
 	"os"
 
 	gomysql "github.com/go-sql-driver/mysql"
@@ -34,8 +33,11 @@ func OpenDB() {
 	if err != nil {
 
 	}
-	err = DB.AutoMigrate(&Game{}, &ProposalInfo{}, &Question{}, &Tag{}, &Template{}, &User{})
-	if err != nil {
-		log.Fatal(err)
-	}
+
+	//err = DB.AutoMigrate(&Game{}, &ProposalInfo{}, &Question{}, &Tag{}, &Template{}, &User{})
+	//	Some bugs here         ^
+	//	No idea how to fix it  |
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 }
