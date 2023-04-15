@@ -57,4 +57,4 @@ docker stop $(sudo docker ps -f name=melting_backend -q)
 * 优化图片上传
 * 日志记录
 
-//docker run -dp 65100:65000 --env-file melting.env -v /home/zhang/deploy/cert:/cert --name=melting_backend a48zhang/melting:dev
+

@@ -22,7 +22,7 @@ func UploadProfilePhoto(file *multipart.File, size int64) (string, error) {
 	formUploader := storage.NewFormUploader(&storage.Config{
 		Zone:          &storage.ZoneHuanan,
 		UseCdnDomains: false,
-		UseHTTPS:      false,
+		UseHTTPS:      true,
 	})
 
 	putExtra := new(storage.PutExtra)

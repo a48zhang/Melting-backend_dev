@@ -20,7 +20,7 @@ func GetSth[T Sth](value T) T {
 
 // UpdateSth The primary key must not be empty
 func UpdateSth[T Sth](value T) error {
-	result := db.DB.Table(value.TableName()).Updates(value)
+	result := db.DB.Updates(value)
 	return result.Error
 }
 
@@ -28,13 +28,13 @@ func UpdateSth[T Sth](value T) error {
 func CreateSth[T Sth](value T) (error, T) {
 	var x = new(T) // <- Used to fix nil pointer panic.
 	*x = value     //	Don't touch it.
-	result := db.DB.Table(value.TableName()).Create(x)
+	result := db.DB.Create(x)
 	return result.Error, *x
 }
 
 // DeleteSth The primary key must not be empty
 func DeleteSth[T Sth](value T) error {
-	result := db.DB.Table(value.TableName()).Delete(&value)
+	result := db.DB.Delete(&value)
 	return result.Error
 }
 
@@ -42,6 +42,6 @@ func DeleteSth[T Sth](value T) error {
 // return data slice, number
 func GetManySth[T Sth](value T) ([]T, int) {
 	data := make([]T, MaxSliceCapacity)
-	result := db.DB.Table(value.TableName()).Find(&data, value)
+	result := db.DB.Find(&data, value)
 	return data[0:int(result.RowsAffected)], int(result.RowsAffected)
 }

@@ -3,7 +3,7 @@ package model
 import "main/model/db"
 
 func DeleteProposal(value db.ProposalInfo) error {
-	result := db.DB.Table(value.TableName()).Where("uid = ?", value.UID).Update("uid", 0)
+	result := db.DB.Table(value.TableName()).Where("info_id = ?", value.InfoID).Update("uid", 0)
 	return result.Error
 }
 
