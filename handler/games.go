@@ -67,10 +67,17 @@ func FindGames(r *gin.Context) {
 //	@Failure		404
 //	@Router			/project/games/details [get]
 func GameDetail(r *gin.Context) {
-	id := r.Query("game_id")
-	if id == "" {
+	Q := r.Query("game_id")
+	if Q == "" {
 		SendError(r, nil, nil, model.ErrorSender(), http.StatusBadRequest)
 		return
 	}
-	r.Redirect(http.StatusMovedPermanently, "/resource/games/"+id+".json")
+	id, _ := strconv.Atoi(Q)
+	data, err := model.GetGameDetail(id)
+	if err != nil {
+		SendError(r, err, nil, model.ErrorSender(), http.StatusNotFound)
+		return
+	}
+	SendResponse(r, data)
+	//r.Redirect(http.StatusMovedPermanently, "/resource/games/"+id+".json")
 }

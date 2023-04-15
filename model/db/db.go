@@ -32,7 +32,10 @@ func OpenDB() {
 	}
 	DB, err = gorm.Open(mysql.Open(cert.FormatDSN()))
 	if err != nil {
+
+	}
+	err = DB.AutoMigrate(&Game{}, &ProposalInfo{}, &Question{}, &Tag{}, &Template{}, &User{})
+	if err != nil {
 		log.Fatal(err)
 	}
-
 }

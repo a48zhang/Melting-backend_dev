@@ -7,12 +7,14 @@ import (
 	"io"
 	"log"
 	"main/model/db"
+	"main/model/mongodb"
 	"os"
 	"time"
 )
 
 func InitService() {
 	db.OpenDB()
+	mongodb.ConnectMongo()
 	initQN()
 	loadCert()
 	loadAddr()

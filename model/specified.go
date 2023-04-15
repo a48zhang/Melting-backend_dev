@@ -1,6 +1,11 @@
 package model
 
-import "main/model/db"
+import (
+	"context"
+	"go.mongodb.org/mongo-driver/bson"
+	"main/model/db"
+	"main/model/mongodb"
+)
 
 func DeleteProposal(value db.ProposalInfo) error {
 	result := db.DB.Table(value.TableName()).Where("info_id = ?", value.InfoID).Update("uid", 0)
@@ -25,4 +30,15 @@ func GetTemplate(name string) db.Template {
 	data := db.Template{Name: name}
 	db.DB.Table(db.TableNameTemplate).Find(&data)
 	return data
+}
+
+func GetGameDetail(gameID int) (bson.D, error) {
+	col := mongodb.Client.Database("melting").Collection("gameDetails")
+	cursor := col.FindOne(context.TODO(), bson.D{{"gameID", gameID}})
+	var result bson.D
+	err := cursor.Decode(&result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }

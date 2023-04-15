@@ -51,6 +51,7 @@ docker stop $(sudo docker ps -f name=melting_backend -q)
 | pwd         | MySQL数据库_密码    |
 | addr        | MySQL数据库_地址    |
 | db          | MySQL数据库_数据库名称 |
+| MONGO_URL   | MongoDB_连接URI  |
 
 # TODO List
 * 使用MongoDB存储resource/
