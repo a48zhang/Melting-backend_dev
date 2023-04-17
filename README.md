@@ -9,6 +9,7 @@ By @[Cg1028](https://github.com/Cg1028)
 
 # Release Note 
 * V1.6 HTTPS支持
+* V1.7 MongoDB
 
 # 部署
 ## 使用Docker
@@ -54,8 +55,11 @@ docker stop $(sudo docker ps -f name=melting_backend -q)
 | MONGO_URL   | MongoDB_连接URI  |
 
 # TODO List
-* 使用MongoDB存储resource/
+* ~~使用MongoDB存储resource/~~
 * 优化图片上传
 * 日志记录
+* 调整环境变量名称
+* websocket
+
 
 
