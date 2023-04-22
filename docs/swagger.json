@@ -4,13 +4,13 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "Backend system of Muxi_Melting",
+        "description": "# TODO List\r\n* ~~使用MongoDB存储resource/~~\r\n* 优化图片上传\r\n* 日志记录\r\n* 调整环境变量名称\r\n* websocket\r\n\r\n\r\n\r\n",
         "title": "Melting API",
         "contact": {
             "name": "@a48zhang \u0026 @Cg1028",
             "email": "3557695455@qq.com 2194028175@qq.com"
         },
-        "version": "1.6"
+        "version": "1.7"
     },
     "basePath": "/api/v1",
     "paths": {

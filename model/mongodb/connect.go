@@ -7,7 +7,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
-	"os"
 )
 
 var uri = "mongodb://localhost:27017/"
@@ -15,12 +14,13 @@ var uri = "mongodb://localhost:27017/"
 var Client *mongo.Client
 
 func ConnectMongo() {
-	uri = os.Getenv("MONGO_URL")
+	//uri = os.Getenv("MONGO_URL")
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
 	var err error
 	Client, err = mongo.Connect(context.TODO(), opts)
-	err = Client.Database("admin").RunCommand(context.TODO(), bson.D{{"ping", 1}}).Decode(&bson.D{})
+	var result bson.D
+	err = Client.Database("admin").RunCommand(context.TODO(), bson.D{{"ping", 1}}).Decode(&result)
 	if err != nil {
 		fmt.Println("connecting mongodb uri: ", uri)
 		log.Fatal(err)

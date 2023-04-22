@@ -1049,12 +1049,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.6",
+	Version:          "1.7",
 	Host:             "",
 	BasePath:         "/api/v1",
 	Schemes:          []string{"https"},
 	Title:            "Melting API",
-	Description:      "Backend system of Muxi_Melting",
+	Description:      "# TODO List\r\n* ~~使用MongoDB存储resource/~~\r\n* 优化图片上传\r\n* 日志记录\r\n* 调整环境变量名称\r\n* websocket\r\n\r\n\r\n\r\n",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

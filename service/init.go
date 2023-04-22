@@ -8,6 +8,7 @@ import (
 	"log"
 	"main/model/db"
 	"main/model/mongodb"
+	"main/service/wsrouter"
 	"os"
 	"time"
 )
@@ -18,6 +19,7 @@ func InitService() {
 	initQN()
 	loadCert()
 	loadAddr()
+	wsrouter.Init()
 }
 
 var TLSCert = "conf/chain.crt"

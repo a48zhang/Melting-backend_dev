@@ -1,13 +1,12 @@
 package router
 
 import (
+	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"main/handler"
 	"main/router/middleware"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
 )
 
 func Register(e *gin.Engine) *gin.Engine {
@@ -17,7 +16,6 @@ func Register(e *gin.Engine) *gin.Engine {
 		c.String(http.StatusNotFound, "The incorrect API router.")
 	})
 
-	e.Static("/resource/games", "./resource/games")
 	e.GET("/api/v1/user", handler.GetOnesInfo)
 
 	v1 := e.Group("/api/v1")
@@ -55,5 +53,14 @@ func Register(e *gin.Engine) *gin.Engine {
 			}
 		}
 	}
+
+	return e
+}
+
+func WSHandlerRegister(e *gin.Engine) *gin.Engine {
+	e.GET("", handler.NewWebSocket)
+	e.NoRoute(func(c *gin.Context) {
+		c.String(http.StatusNotFound, "This port is websocket-only.")
+	})
 	return e
 }
