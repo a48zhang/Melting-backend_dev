@@ -7,6 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
+	"os"
 )
 
 var uri = "mongodb://localhost:27017/"
@@ -14,7 +15,10 @@ var uri = "mongodb://localhost:27017/"
 var Client *mongo.Client
 
 func ConnectMongo() {
-	//uri = os.Getenv("MONGO_URL")
+	tmp := os.Getenv("MONGO_URL")
+	if tmp != "" {
+		uri = tmp
+	}
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
 	var err error
