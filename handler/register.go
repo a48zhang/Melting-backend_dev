@@ -3,7 +3,7 @@ package handler
 import (
 	"main/model"
 	"main/model/db"
-	"main/service"
+	"main/service/auth"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -34,9 +34,9 @@ func Register(r *gin.Context) {
 	case "ccnu":
 		//TODO
 	case "qq":
-		err = service.CreateWithQQ(data)
+		err = auth.CreateWithQQ(data)
 	default:
-		err = service.CreateNative(data)
+		err = auth.CreateNative(data)
 	}
 	if err != nil {
 		SendError(r, err, data, model.ErrorSender(), http.StatusForbidden)

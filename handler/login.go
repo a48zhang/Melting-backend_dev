@@ -3,7 +3,7 @@ package handler
 import (
 	"main/model"
 	"main/model/db"
-	"main/service"
+	"main/service/auth"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -63,7 +63,7 @@ func NativeLogin(r *gin.Context) {
 			model.ErrorSender(), http.StatusBadRequest)
 		return
 	}
-	token, err := service.LoginNative(loginAuth)
+	token, err := auth.LoginNative(loginAuth)
 	if err == model.ErrAuthIncorrect {
 		SendError(r, err, nil,
 			model.ErrorSender(), http.StatusUnauthorized)
@@ -94,7 +94,7 @@ func QQLogin(r *gin.Context) {
 			model.ErrorSender(), http.StatusBadRequest)
 		return
 	}
-	token, err := service.LoginWithQQ(loginAuth)
+	token, err := auth.LoginWithQQ(loginAuth)
 	if err == model.ErrAuthIncorrect {
 		SendError(r, err, nil,
 			model.ErrorSender(), http.StatusUnauthorized)

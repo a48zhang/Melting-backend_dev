@@ -8,6 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"os"
+	"time"
 )
 
 var uri = "mongodb://localhost:27017/"
@@ -23,6 +24,15 @@ func ConnectMongo() {
 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
 	var err error
 	Client, err = mongo.Connect(context.TODO(), opts)
+	if err != nil {
+		fmt.Println("mongo connection failed. reconnecting mongodb uri: ", uri)
+		time.Sleep(time.Second * 30)
+		Client, err = mongo.Connect(context.TODO(), opts)
+		if err != nil {
+			fmt.Println("connecting mongodb uri: ", uri)
+			log.Fatal(err)
+		}
+	}
 	var result bson.D
 	err = Client.Database("admin").RunCommand(context.TODO(), bson.D{{"ping", 1}}).Decode(&result)
 	if err != nil {

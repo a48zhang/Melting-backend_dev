@@ -1,53 +1,90 @@
 package wsrouter
 
 import (
-	"fmt"
-	"github.com/gorilla/websocket"
+	"main/service/auth"
 	"main/service/echo"
 	"main/service/ws"
-	"strconv"
 )
 
-// RouteWsService Routes websocket to the correct place.
-func RouteWsService(r *websocket.Conn) func(*websocket.Conn) {
+// wsrouter is a service to route WebSocket services.
+// New Websocket services should be registered here.
+// A service requires a function to handle data from client, as `func(ws.WsData, *ws.Service, chan int)`
+
+func Init() {
+	routeFunc = make(map[string]func(ws.WsData, *ws.Service, chan int))
+
+	// Insert WebSocket services below
+	// please use the following format:
+	routeFunc["echo"] = echo.EchoFunc
+	// 1 -- echo
+
+	routeFunc["login"] = auth.Login
+	// 2 -- login
+
+	// Insert WebSocket services here
+}
+
+func RouterResponser(h *ws.Service) {
+	defer h.Waiter.Done()
+	// cherr is a channel to handle error from foo().
+	cherr := make(chan int, 8)
+	register := make(map[string]func(ws.WsData, *ws.Service, chan int))
+
 	for {
-		var data ws.WsData
-		r.ReadJSON(&data)
-		if data.Service != "router" {
-			r.WriteJSON(ws.WsData{
-				Typ:     websocket.TextMessage,
-				Service: "router",
-				Message: "Not routed",
-				BinData: nil,
-			})
-			continue
-		}
-		i, _ := strconv.Atoi(data.Message)
-		if v, ok := routePath[i]; ok {
-			r.WriteJSON(ws.WsData{
-				Typ:     websocket.TextMessage,
-				Service: "router",
-				Message: "routed successfully to service " + data.Message,
-				BinData: nil,
-			})
-			return v
-		} else {
-			r.WriteJSON(ws.WsData{
-				Typ:     websocket.TextMessage,
-				Service: "router",
-				Message: "Service " + data.Message + " not found ",
-				BinData: nil,
-			})
+		select {
+		case data := <-h.DataChan:
+			switch data.Service {
+
+			case "router":
+				if data.Message == "register" {
+					routerRegister(h, register, data)
+				} else {
+					h.Conn.WriteJSON(ws.WsData{
+						Service: "router",
+						Message: "Unknown command " + string(data.Message),
+					})
+				}
+
+			default:
+				foo, ok := register[data.Service]
+				if !ok {
+					h.Conn.WriteJSON(ws.WsData{
+						Service: "router",
+						Message: "Service " + data.Service + " not found ",
+					})
+					continue
+				}
+				// Run a goroutine to handle data from client.
+				go func() {
+					defer ws.PanicDetect(cherr, h, foo)
+					foo(data, h, cherr)
+				}()
+			}
+
+		// Handle error from foo().
+		case errno := <-cherr:
+			if errno == -1 {
+				h.Abort()
+				return
+			}
 		}
 	}
 }
 
-var routePath map[int]func(*websocket.Conn)
-
-func Init() {
-	// Insert WebSocket services here
-	routePath = make(map[int]func(*websocket.Conn))
-	routePath[1] = echo.Echo
-	fmt.Println(routePath[1])
-	// 1 -- echo
+func routerRegister(h *ws.Service, register map[string]func(ws.WsData, *ws.Service, chan int), data ws.WsData) {
+	ok := false
+	register[data.Data], ok = routeFunc[data.Data]
+	if ok {
+		h.Conn.WriteJSON(ws.WsData{
+			Service: "router",
+			Message: "Registered successfully to service " + string(data.Data),
+		})
+	} else {
+		h.Conn.WriteJSON(ws.WsData{
+			Service: "router",
+			Message: "Requested service " + string(data.Data) + " not found ",
+		})
+	}
 }
+
+var routeFunc map[string]func(ws.WsData, *ws.Service, chan int)

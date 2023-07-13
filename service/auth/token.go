@@ -1,10 +1,12 @@
-package service
+package auth
 
 import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
 )
+
+// Blame: Following code is from @[Cg1028](https://github.com/Cg1028)
 
 // 声明一个token容器
 var Signedkey = []byte("Muxi_Melting")
@@ -34,9 +36,9 @@ func Parsetoken(tokenString string) (*jwt.Token, *Myclaims, error) {
 		func(token *jwt.Token) (interface{}, error) {
 			return Signedkey, nil
 		})
-		if err != nil {
-			return nil,nil, err
-		}
+	if err != nil {
+		return nil, nil, err
+	}
 	cl, _ := token.Claims.(*Myclaims)
 	return token, cl, err
 }

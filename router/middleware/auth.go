@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"main/model"
-	"main/service"
+	"main/service/auth"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +14,7 @@ func TokenParser(r *gin.Context) {
 		r.AbortWithError(http.StatusForbidden, model.ErrAuthInvalid)
 		return
 	}
-	token, claims, err := service.Parsetoken(tokenString)
+	token, claims, err := auth.Parsetoken(tokenString)
 	if err != nil || !token.Valid {
 		r.AbortWithError(http.StatusForbidden, model.ErrAuthInvalid)
 		return

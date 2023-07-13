@@ -1,0 +1,72 @@
+version: '3.7'
+networks:
+  inner:
+
+volumes:
+  mysql_vol:
+  mongo_vol:
+
+services:
+  backend_general_service_g1:
+    image: a48zhang/melting:dev
+    networks:
+      - inner
+    restart: always
+    env_file:
+      - ~/deploy/melting_be.env
+
+  backend_general_service_g2:
+    image: a48zhang/melting:dev
+    networks:
+      - inner
+    restart: always
+    env_file:
+      - ~/deploy/melting_be.env
+
+  backend_websocket_service_g1:
+    container_name: websocket_service_01
+    image: a48zhang/melting:dev
+    networks:
+      - inner
+    restart: always
+    env_file:
+      - ~/deploy/melting_ws.env
+
+  mysql: 
+    container_name: mysql01
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    volumes:
+      - mysql_vol:/var/lib/mysql
+    networks:
+      - inner
+    restart: always
+
+  mongo:
+    container_name: mongo01
+    image: mongo:latest
+    networks:
+      - inner
+    volumes:
+      - mongo_vol:/data/db
+    env_file:
+      - ~/deploy/mongo.env
+    restart: always
+
+  nginx:
+    container_name: nginx01
+    image: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+      - "65000:65000"
+      - "65001:65001"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - inner
+      - default
+    restart: always
+

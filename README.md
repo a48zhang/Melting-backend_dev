@@ -62,4 +62,8 @@ docker stop $(sudo docker ps -f name=melting_backend -q)
 * websocket
 
 
-
+# WebSocket 维护
+## 编写新的WebSocket服务
+1. 在`service`下新增软件包
+2. 编写符合`func Foo(data ws.WsData, ws *websocket.Conn, cherr chan int)`的函数
+3. 注册到`router`

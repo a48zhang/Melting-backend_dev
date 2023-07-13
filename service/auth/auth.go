@@ -1,4 +1,4 @@
-package service
+package auth
 
 import (
 	"main/model"
@@ -6,12 +6,6 @@ import (
 )
 
 func LoginNative(data db.User) (string, error) {
-	// TODO Login auth should be Base64 encrypted
-	// s, err := B64Decode(data.Auth)
-	//if err != nil {
-	//	return "", err
-	//}
-	//ds := string(s)
 	ds := data.Auth
 	loginAuth := db.User{
 		NickName: data.NickName,
@@ -30,12 +24,6 @@ func LoginNative(data db.User) (string, error) {
 }
 
 func LoginWithQQ(data db.User) (string, error) {
-	// TODO Login auth should be Base64 encrypted
-	// s, err := B64Decode(data.Auth)
-	//if err != nil {
-	//	return "", err
-	//}
-	//ds := string(s)
 	ds := data.Auth
 	loginAuth := db.User{
 		Qq: data.Qq,
@@ -62,8 +50,6 @@ func CreateNative(data db.User) error {
 	if data.Auth == "" {
 		return model.ErrAuthInvalid
 	}
-	// Encrypt Password
-	// TODO
 	err, _ := model.CreateSth(data)
 	if err != nil {
 		return err
